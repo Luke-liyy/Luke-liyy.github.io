@@ -1,0 +1,324 @@
+<!--
+  Selected Writing — companion page to index.html
+  Original works by Yuanchen Li (李源宸). English layout; works kept in the original Chinese.
+  Place alongside index.html in the same folder. Linked from the "Beyond Research" section.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Selected Writing · Yuanchen Li</title>
+<meta name="description" content="Original poetry and prose by Yuanchen Li — classical-style verse, modern poems, and fu." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Noto+Serif+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --paper:#FBF8F1; --paper-deep:#F3EDE0;
+    --ink:#1F1B16; --ink-soft:#5B5347; --ink-faint:#8C8475;
+    --seal:#9C2B25; --seal-deep:#7A201C;
+    --rule:#DAD0BE; --rule-soft:#E8E0D0;
+    --maxw:860px;
+    --serif-disp:'Cormorant Garamond','Noto Serif SC',Georgia,serif;
+    --serif-body:'Spectral','Noto Serif SC',Georgia,serif;
+    --serif-cn:'Noto Serif SC','Spectral',serif;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{ background:var(--paper); color:var(--ink); font-family:var(--serif-body); font-size:18px; line-height:1.75;
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+    background-image:radial-gradient(rgba(120,100,60,.025) 1px, transparent 1px); background-size:3px 3px; }
+  ::selection{ background:rgba(156,43,37,.16); }
+  a{ color:var(--seal); text-decoration:none; transition:color .2s ease; }
+  a:hover{ color:var(--seal-deep); }
+
+  nav{ position:sticky; top:0; z-index:50; background:rgba(251,248,241,.82);
+    backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); border-bottom:1px solid var(--rule-soft); }
+  nav .nav-inner{ max-width:var(--maxw); margin:0 auto; padding:14px 28px; display:flex; align-items:center; justify-content:space-between; }
+  nav .brand{ font-family:var(--serif-disp); font-size:21px; font-weight:600; letter-spacing:.02em; color:var(--ink); }
+  nav .back{ font-size:13.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-soft); }
+  nav .back:hover{ color:var(--seal); }
+
+  .wrap{ max-width:var(--maxw); margin:0 auto; padding:0 28px; }
+
+  header.hero{ padding:84px 0 56px; text-align:center; }
+  header.hero .eyebrow{ font-family:var(--serif-body); color:var(--seal); letter-spacing:.2em; font-size:13px; text-transform:uppercase; margin-bottom:18px; }
+  header.hero h1{ font-family:var(--serif-disp); font-weight:700; font-size:clamp(44px,7vw,68px); line-height:1; }
+  header.hero h1 .cn{ font-family:var(--serif-cn); font-weight:600; display:block; font-size:.4em; color:var(--ink-soft); letter-spacing:.42em; margin-top:.5em; padding-left:.42em; }
+  header.hero p.intro{ margin:24px auto 0; max-width:32em; color:var(--ink-soft); font-style:italic; font-size:18px; }
+  header.hero .ornament{ width:46px; height:1px; background:var(--seal); margin:30px auto 0; position:relative; }
+  header.hero .ornament::after{ content:''; position:absolute; left:50%; top:50%; width:6px; height:6px; background:var(--seal); transform:translate(-50%,-50%) rotate(45deg); }
+
+  .sec{ padding:30px 0 50px; }
+  .sec-head{ display:flex; align-items:baseline; gap:16px; margin-bottom:6px; }
+  .sec-num{ font-family:var(--serif-disp); color:var(--seal); font-size:16px; font-weight:600; border:1px solid var(--seal);
+    border-radius:2px; min-width:34px; height:30px; padding:0 8px; flex:none; display:grid; place-items:center; transform:translateY(-2px); }
+  .sec-head h2{ font-family:var(--serif-disp); font-weight:600; font-size:clamp(28px,4vw,38px); line-height:1.1; }
+  .sec-head h2 .sec-cn{ font-family:var(--serif-cn); font-size:.52em; font-weight:500; color:var(--ink-faint); }
+  .sec-sub{ color:var(--ink-faint); font-size:14px; letter-spacing:.04em; margin:0 0 30px 50px; }
+  @media(max-width:560px){ .sec-sub{ margin-left:0; } }
+
+  .work{ padding:26px 0; border-top:1px solid var(--rule-soft); }
+  .work:first-child{ border-top:none; }
+  .w-title{ font-family:var(--serif-cn); font-weight:600; font-size:23px; color:var(--ink); text-align:center; letter-spacing:.08em; }
+  .w-rule{ width:30px; height:1px; background:var(--seal); opacity:.6; margin:12px auto 20px; }
+
+  /* poems: centered, generous line height */
+  .poem-body{ text-align:center; }
+  .v-line{ font-family:var(--serif-cn); font-size:20px; line-height:2.05; color:var(--ink); letter-spacing:.05em; }
+
+  /* fu: justified prose in a paper card */
+  .fu{ }
+  .fu-body{ background:var(--paper-deep); border:1px solid var(--rule); border-radius:4px; padding:28px 32px; }
+  .fu-label{ font-family:var(--serif-cn); color:var(--seal); text-align:center; font-size:15px; letter-spacing:.3em; margin:2px 0 14px; }
+  .fu-p{ font-family:var(--serif-cn); font-size:17px; line-height:2.0; color:var(--ink); text-align:justify; letter-spacing:.02em; text-indent:2em; }
+  .fu-p + .fu-p{ margin-top:14px; }
+
+  footer{ border-top:1px solid var(--rule-soft); padding:34px 0 56px; margin-top:30px; }
+  footer .wrap{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; color:var(--ink-faint); font-size:13.5px; }
+
+  .reveal{ opacity:0; transform:translateY(16px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal.in{ opacity:1; transform:none; }
+  @media(prefers-reduced-motion:reduce){ .reveal{ opacity:1; transform:none; } html{ scroll-behavior:auto; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="brand">Yuanchen Li</div>
+    <a class="back" href="index.html">&larr; Back to home</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Selected Writing</div>
+    <h1>Poetry &amp; Prose<span class="cn">诗 · 文 · 赋</span></h1>
+    <p class="intro">Original work in the classical and modern Chinese traditions — regulated verse, free verse, and fu. The pieces are kept in their original language.</p>
+    <div class="ornament"></div>
+  </div>
+</header>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num">I</span><h2>Classical Poetry<span class="sec-cn"> · 古典诗</span></h2></div>
+    <div class="sec-sub reveal">Regulated verse & quatrains</div>
+    <div class="work-list poem-list">
+      <article class="work poem reveal">
+        <h3 class="w-title">记支教第一日</h3>
+        <div class="w-rule"></div>
+        <div class="poem-body">
+          <div class="v-line">黄泥逢水清，柴门入山深。</div>
+          <div class="v-line">烟火成滋味，听泉陌上音。</div>
+          <div class="v-line">躬耕欣喜在，村野自修心。</div>
+          <div class="v-line">日落三旬短，来时复共忱。</div>
+        </div>
+      </article>
+      <article class="work poem reveal">
+        <h3 class="w-title">子夜拾句所作</h3>
+        <div class="w-rule"></div>
+        <div class="poem-body">
+          <div class="v-line">时久未浑墨，往昔总不禁。</div>
+          <div class="v-line">七言多悔意，绝句亦难噙。</div>
+          <div class="v-line">荒草无行道，柴扉有律音。</div>
+          <div class="v-line">星河能失渡，游子是吾心。</div>
+        </div>
+      </article>
+      <article class="work poem reveal">
+        <h3 class="w-title">与丁生夜话后作</h3>
+        <div class="w-rule"></div>
+        <div class="poem-body">
+          <div class="v-line">同辈多言得上游，少时好读义山诗。</div>
+          <div class="v-line">皇都食笋淹渣滓，庠序为官愁主司。</div>
+          <div class="v-line">谈笑题红需纵酒，远游阔步醉参差。</div>
+          <div class="v-line">三更白发归流落，传信鸱鸮与祝尸。</div>
+        </div>
+      </article>
+      <article class="work poem reveal">
+        <h3 class="w-title">夜行</h3>
+        <div class="w-rule"></div>
+        <div class="poem-body">
+          <div class="v-line">虺蜴塞途千户宁，豺狼当道锦衣行。</div>
+          <div class="v-line">鲰生犹唱国殇曲，枯骨铮铮路不平。</div>
+          <div class="v-line">九穗寒微五谷盈，三牲腥躁万钟鸣。</div>
+          <div class="v-line">木铎爝火悠夜逝，岁后添灯有星萤。</div>
+        </div>
+      </article>
+      <article class="work poem reveal">
+        <h3 class="w-title">冬归</h3>
+        <div class="w-rule"></div>
+        <div class="poem-body">
+          <div class="v-line">满城芳菲雪，村居腊肉肥。</div>
+          <div class="v-line">青山隔远道，游子溯溪归。</div>
+          <div class="v-line">星火木下走，柴扉石上推。</div>
+          <div class="v-line">寒声追湖曲，清气荡茶杯。</div>
+        </div>
+      </article>
+      <article class="work poem reveal">
+        <h3 class="w-title">迟桂花</h3>
+        <div class="w-rule"></div>
+        <div class="poem-body">
+          <div class="v-line">月枝迟放小园藏，十里芳华酿酒浆。</div>
+          <div class="v-line">醉后漫寻糟醴处，新醅绳绳（min三声）诉空肠。</div>
+          <div class="v-line">黄金万两劝儿郎，稻粟千钧剩粜粮。</div>
+          <div class="v-line">或问人间福禄事，近闻怎解桂花香。</div>
+        </div>
+      </article>
+      <article class="work poem reveal">
+        <h3 class="w-title">记近时诸事</h3>
+        <div class="w-rule"></div>
+        <div class="poem-body">
+          <div class="v-line">远山遥记不题诗，陟后削成自在鸣。</div>
+          <div class="v-line">百亩闲田归隐处，掩揖锄下去窗楹。</div>
+          <div class="v-line">愿为稚子不识文，笑料春风忝古庚。</div>
+          <div class="v-line">九四难明弃蓍意，二三言语作诗声。</div>
+        </div>
+      </article>
+      <article class="work poem reveal">
+        <h3 class="w-title">记元日</h3>
+        <div class="w-rule"></div>
+        <div class="poem-body">
+          <div class="v-line">犹忆冬归送锦书，故园旧酒乘新樽。</div>
+          <div class="v-line">寻诗漫步殊红色，惊鹊临风暗柳尘。</div>
+          <div class="v-line">雾锁长桥及近津，富阳行止更多人。</div>
+          <div class="v-line">寒江灯火生明灭，万事潮头又一春。</div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num">II</span><h2>Modern Poetry<span class="sec-cn"> · 现代诗</span></h2></div>
+    <div class="sec-sub reveal">Free verse</div>
+    <div class="work-list poem-list">
+      <article class="work poem reveal">
+        <h3 class="w-title">无影灯</h3>
+        <div class="w-rule"></div>
+        <div class="poem-body">
+          <div class="v-line">太阳是个老油条</div>
+          <div class="v-line">扔下几个新兵</div>
+          <div class="v-line">去争夜间的饷粮</div>
+          <div class="v-line">长夜将至</div>
+          <div class="v-line">无人守望的道路</div>
+          <div class="v-line">只敢走那流光斜织的梁</div>
+          <div class="v-line">把影子旋进泥土</div>
+          <div class="v-line">不容喘息</div>
+          <div class="v-line">暗自等待夜的黎明</div>
+          <div class="v-line">我渴望光啊</div>
+          <div class="v-line">填充我心头的烙印</div>
+          <div class="v-line">直到破解那植根深处的诅咒</div>
+          <div class="v-line">该死的灯</div>
+          <div class="v-line">为何不留下影子</div>
+          <div class="v-line">来书写他看到的历史</div>
+        </div>
+      </article>
+      <article class="work poem reveal">
+        <h3 class="w-title">以诗人的名义</h3>
+        <div class="w-rule"></div>
+        <div class="poem-body">
+          <div class="v-line">以诗人的名义</div>
+          <div class="v-line">作个小丑</div>
+          <div class="v-line">拿世俗的涂料</div>
+          <div class="v-line">装饰快乐，淹盖眼泪</div>
+          <div class="v-line">让始终鲜红的心血</div>
+          <div class="v-line">跳动在我的近前</div>
+          <div class="v-line">用黑暗的光明</div>
+          <div class="v-line">照射眼圈</div>
+          <div class="v-line">哦，</div>
+          <div class="v-line">你的欢声</div>
+          <div class="v-line">啊，</div>
+          <div class="v-line">你的笑颜</div>
+          <div class="v-line">妈妈说</div>
+          <div class="v-line">我们存在的意义</div>
+          <div class="v-line">是为了让别人快乐</div>
+          <div class="v-line">让自己安眠</div>
+          <div class="v-line">一辈子也无法卸下的污垢</div>
+          <div class="v-line">总好过挂在墙上的照片</div>
+          <div class="v-line">我拥有自己</div>
+          <div class="v-line">洁白的内芯</div>
+          <div class="v-line">紫色的外沿</div>
+          <div class="v-line">我将成为小丑</div>
+          <div class="v-line">不在以诗的名义</div>
+        </div>
+      </article>
+      <article class="work poem reveal">
+        <h3 class="w-title">希望的地方</h3>
+        <div class="w-rule"></div>
+        <div class="poem-body">
+          <div class="v-line">我曾寻找她</div>
+          <div class="v-line">一个有希望的地方</div>
+          <div class="v-line">朝拜黄昏与清晨</div>
+          <div class="v-line">无惧日荼与天更</div>
+          <div class="v-line">被光明更光明所黯谈</div>
+          <div class="v-line">向黑暗更黑暗中溯游</div>
+          <div class="v-line">终于</div>
+          <div class="v-line">我找到了</div>
+          <div class="v-line">希望是个娼妓</div>
+          <div class="v-line">给黑夜偷渡了明亮</div>
+          <div class="v-line">作为代价</div>
+          <div class="v-line">让白昼闪射出星辰</div>
+          <div class="v-line">同我披星赶月，共度良辰</div>
+          <div class="v-line">我倾尽所有，哀其不争</div>
+          <div class="v-line">纵使巧然知道了真相</div>
+          <div class="v-line">依旧乞求命运的铜板</div>
+          <div class="v-line">等候她的裁决</div>
+          <div class="v-line">也许</div>
+          <div class="v-line">一切就像他们说的那样</div>
+          <div class="v-line">人们祈祷黑夜</div>
+          <div class="v-line">是为了等待光明</div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num">III</span><h2>Fu<span class="sec-cn"> · 赋</span></h2></div>
+    <div class="sec-sub reveal">Rhapsody / prose-poem</div>
+    <div class="work-list fu-list">
+      <article class="work fu reveal">
+        <h3 class="w-title">杭电赋</h3>
+        <div class="w-rule"></div>
+        <div class="fu-body">
+          <div class="fu-label">序 · Preface</div>
+          <p class="fu-p">入杭电近两载，一载修心，寻云程渡口，半载立志，不忘童稚之言，鲜作文。亦有戚戚于昨日之事，幸遇二三师者传道解惑，然铸器之所，多汲汲之辈，纷繁所扰，作文以遣之。</p>
+          <p class="fu-p">犹忆九月，发轫启车，荫道红紫，有居四人。盼顾同侪，如隔万人。书仓北斗，鼎问于天，江水东流，意有求贤。然鸣钟即起，三牲腥躁，曲水于渠，难渡孔师。百八十人，是为班小，驱虎吞狼，是以平权。九月其同，载缵武功；言私其豵，献豣于公。</p>
+          <p class="fu-p">下沙之地，有树无虞，交交黄鸟，止于桑棘。淇水汤汤,渐车帷裳，我朱孔阳，为公子裳。而乃弃尊道以得路，愚黔首而自知。衔金锁以降世，乞明珠以耀躯。洊C2以尊吾道，扬浙里以耀器鸣。干将发硎，是牺牲以铸剑，东施效颦，乃有形亦有心。</p>
+          <p class="fu-p">白纸黑字，不见题红，五石之处，为吾所言是旨，古之所谓“一言偾事，一人定国”，其此之谓乎？劝缄默以罢序，哀吾身之浮萍，学术缅北，是与民同，高堂员外，强立吾师。或问“强”者，和而不流，强哉矫！</p>
+          <p class="fu-p">《诗》云“潜虽伏矣，亦孔之昭”。彼苍者天，问鼎无雨。代匠铸者，尸祝无祈。无问师者，此奠何行？</p>
+        </div>
+      </article>
+      <article class="work fu reveal">
+        <h3 class="w-title">荷花宴赋</h3>
+        <div class="w-rule"></div>
+        <div class="fu-body">
+          <p class="fu-p">时为三伏，天朗气清。天高地远，日阳三更。跋山涉水，意为济民。今有胜宴，以为兴村。</p>
+          <p class="fu-p">黎明初起，即行载车，靠凳六十，长桌十二，昨日方成，今往山间。户前二座，老叟运茶之用，河边宝马，干部济民之乘。小子躬身，搭架接线之用，长者涉足，践行共富之约。</p>
+          <p class="fu-p">伐竹三百，耀阳成辉煌架势，谭下采荷，书生出淤泥不染。上下登车，奔波为他人月色，挥手喝止，扬扬为自己进步。艳阳高照，躬身为济世之志，夕阳西下，不知宾客何人。</p>
+          <p class="fu-p">转山阳，浮月影，事未绝，宾已至。欣欣然若云程发轫，戚戚焉有嘱事未成。裁纱为布，载客秽物，莲花为喻，心自高洁。桌上花红，灼灼若同辈之血，日色渐昏，黯黯似眼上黑云。自成村宴，为节梁上之粮，困户犹有，是嘉济民之心。行盘流水，是道青年热血，随手剥蓬，或言此子清廉。笙歌侧畔，观往嘉荷似玫瑰，小子腥躁，退舍嫑扰客清闲。此地有师，远庖厨是为君子，愚亦有友，即侍奉不知何人。</p>
+          <p class="fu-p">完此篇，衣裳尽湿，颗粒未进，飧饷不食，不知饿也，已然，笙歌未绝，人人自乐，憾无美人，骚客未至。愚亦有愧，离席，未与友共尊上座。初欲以七律记之，五十又四字无以胜之，故作此篇，共四百七十又四言。</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="yr"></span> Yuanchen Li · 李源宸</span>
+    <a class="back" href="index.html">&larr; Back to home</a>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('yr').textContent = new Date().getFullYear();
+  var io = new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} }); }, { threshold:0.1 });
+  document.querySelectorAll('.reveal').forEach(function(el,i){ el.style.transitionDelay=((i%4)*55)+'ms'; io.observe(el); });
+</script>
+</body>
+</html>

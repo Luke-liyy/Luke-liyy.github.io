@@ -1,0 +1,375 @@
+<!--
+  ============================================================
+  Academic Homepage  ·  Yuanchen Li 李源宸
+  ------------------------------------------------------------
+  使用 / How to use:
+  1. 把本文件命名为 index.html
+  2. 连同 portrait.jpg 一起放到 <你的GitHub用户名>.github.io 仓库根目录
+  3. 推送后访问 https://<你的用户名>.github.io
+  4. 需要修改的地方都用「TODO」标出
+  ============================================================
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Yuanchen Li · 李源宸</title>
+<meta name="description" content="Academic homepage of Yuanchen Li — Computer Vision, 3D Gaussian Splatting, and computational philology." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Noto+Serif+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+<style>
+  :root{
+    --paper:#FBF8F1; --paper-deep:#F3EDE0;
+    --ink:#1F1B16; --ink-soft:#5B5347; --ink-faint:#8C8475;
+    --seal:#9C2B25; --seal-deep:#7A201C;
+    --rule:#DAD0BE; --rule-soft:#E8E0D0;
+    --maxw:860px;
+    --serif-disp:'Cormorant Garamond','Noto Serif SC',Georgia,serif;
+    --serif-body:'Spectral','Noto Serif SC',Georgia,serif;
+    --serif-cn:'Noto Serif SC','Spectral',serif;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; scroll-padding-top:84px; }
+  body{
+    background:var(--paper); color:var(--ink);
+    font-family:var(--serif-body); font-weight:400; font-size:18px; line-height:1.75;
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+    background-image:radial-gradient(rgba(120,100,60,.025) 1px, transparent 1px);
+    background-size:3px 3px;
+  }
+  ::selection{ background:rgba(156,43,37,.16); }
+  a{ color:var(--seal); text-decoration:none; transition:color .2s ease; }
+  a:hover{ color:var(--seal-deep); }
+
+  nav{ position:sticky; top:0; z-index:50; background:rgba(251,248,241,.82);
+    backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); border-bottom:1px solid var(--rule-soft); }
+  nav .nav-inner{ max-width:var(--maxw); margin:0 auto; padding:14px 28px;
+    display:flex; align-items:center; justify-content:space-between; gap:16px; }
+  nav .brand{ font-family:var(--serif-disp); font-size:21px; font-weight:600; letter-spacing:.02em; color:var(--ink); }
+  nav .brand .cn{ font-family:var(--serif-cn); font-weight:500; color:var(--seal); margin-left:.35em; font-size:18px; }
+  nav ul{ list-style:none; display:flex; gap:20px; flex-wrap:wrap; justify-content:flex-end; }
+  nav ul a{ color:var(--ink-soft); font-size:13.5px; letter-spacing:.06em; text-transform:uppercase; padding:4px 0; position:relative; }
+  nav ul a::after{ content:''; position:absolute; left:0; bottom:0; width:0; height:1px; background:var(--seal); transition:width .25s ease; }
+  nav ul a:hover{ color:var(--ink); }
+  nav ul a:hover::after, nav ul a.active::after{ width:100%; }
+  nav ul a.active{ color:var(--seal); }
+  @media(max-width:680px){ nav ul{ display:none; } }
+
+  .wrap{ max-width:var(--maxw); margin:0 auto; padding:0 28px; }
+  section{ padding:62px 0; border-top:1px solid var(--rule-soft); }
+  section:first-of-type{ border-top:none; }
+
+  .sec-head{ display:flex; align-items:baseline; gap:16px; margin-bottom:32px; }
+  .sec-num{ font-family:var(--serif-disp); color:var(--seal); font-size:16px; font-weight:600;
+    border:1px solid var(--seal); border-radius:2px; min-width:34px; height:30px; padding:0 8px; flex:none;
+    display:grid; place-items:center; transform:translateY(-2px); letter-spacing:.03em; }
+  .sec-head h2{ font-family:var(--serif-disp); font-weight:600; font-size:clamp(28px,4vw,38px); line-height:1.1; letter-spacing:.01em; }
+
+  header.hero{ padding:84px 0 66px; border-top:none; }
+  .hero-grid{ display:grid; grid-template-columns:1fr auto; gap:48px; align-items:center; }
+  @media(max-width:680px){ .hero-grid{ grid-template-columns:1fr; gap:34px; } }
+  .hero h1{ font-family:var(--serif-disp); font-weight:700; font-size:clamp(46px,8vw,74px); line-height:.98; letter-spacing:.005em; }
+  .hero h1 .cn{ font-family:var(--serif-cn); font-weight:600; display:block; font-size:.46em; color:var(--ink-soft); letter-spacing:.12em; margin-top:.35em; }
+  .hero .role{ margin-top:22px; font-size:19px; color:var(--ink-soft); font-style:italic; max-width:31em; }
+  .hero .meta{ margin-top:18px; font-size:15px; color:var(--ink-faint); }
+  .hero .links{ margin-top:26px; display:flex; flex-wrap:wrap; gap:10px 8px; align-items:center; }
+  .hero .links a{ font-size:14px; letter-spacing:.04em; padding:7px 14px; border:1px solid var(--rule);
+    border-radius:2px; color:var(--ink-soft); background:var(--paper); transition:all .2s ease; }
+  .hero .links a:hover{ border-color:var(--seal); color:var(--seal); background:#fff; }
+  .hero .links a.cv{ border-color:var(--seal); color:#fff; background:var(--seal); }
+  .hero .links a.cv:hover{ background:var(--seal-deep); border-color:var(--seal-deep); }
+
+  .seal-block{ display:flex; flex-direction:column; align-items:center; gap:18px; }
+  .portrait{ width:200px; height:auto; display:block;
+    border:1px solid var(--rule); box-shadow:0 8px 30px rgba(60,40,10,.12); }
+
+  p.lead{ font-size:19px; color:var(--ink); }
+  p + p{ margin-top:1em; }
+  .muted{ color:var(--ink-soft); }
+
+  .entry{ display:grid; grid-template-columns:138px 1fr; gap:24px; padding:18px 0; border-bottom:1px solid var(--rule-soft); }
+  .entry:last-child{ border-bottom:none; }
+  .entry .when{ font-size:14px; color:var(--ink-faint); letter-spacing:.03em; padding-top:4px; }
+  .entry .what h3{ font-family:var(--serif-disp); font-size:23px; font-weight:600; line-height:1.2; }
+  .entry .what .org{ color:var(--seal); font-size:16px; margin-top:1px; }
+  .entry .what .desc{ color:var(--ink-soft); font-size:16px; margin-top:8px; }
+  @media(max-width:560px){ .entry{ grid-template-columns:1fr; gap:4px; } .entry .when{ padding-top:0; } }
+
+  .tags{ display:flex; flex-wrap:wrap; gap:10px; margin-top:20px; }
+  .tags span{ font-family:var(--serif-body); font-size:15px; padding:6px 14px; border:1px solid var(--rule);
+    border-radius:20px; color:var(--ink-soft); background:var(--paper-deep); }
+
+  .pub{ display:grid; grid-template-columns:46px 1fr; gap:20px; padding:22px 0; border-bottom:1px solid var(--rule-soft); }
+  .pub:last-child{ border-bottom:none; }
+  .pub .idx{ font-family:var(--serif-disp); font-size:30px; color:var(--seal); font-weight:600; line-height:1; }
+  .pub .ptitle{ font-family:var(--serif-disp); font-size:22px; font-weight:600; line-height:1.28; }
+  .pub .authors{ font-size:15.5px; color:var(--ink-soft); margin-top:6px; }
+  .pub .authors b{ color:var(--ink); font-weight:600; }
+  .pub .venue{ font-style:italic; color:var(--ink-soft); font-size:15.5px; margin-top:3px; }
+  .pub .badge{ display:inline-block; font-family:var(--serif-body); font-size:12px; letter-spacing:.06em;
+    color:var(--seal); border:1px solid var(--seal); border-radius:2px; padding:1px 7px; margin-left:8px; vertical-align:2px; }
+  .pub .plinks{ margin-top:9px; display:flex; gap:14px; flex-wrap:wrap; }
+  .pub .plinks a{ font-size:13.5px; letter-spacing:.04em; text-transform:uppercase; }
+  .pub-subhead{ font-family:var(--serif-disp); font-size:24px; font-weight:600; margin:8px 0 2px; color:var(--ink); }
+  .pub-subhead.literary-head{ margin-top:34px; }
+
+  ul.awards{ list-style:none; }
+  ul.awards li{ padding:13px 0; border-bottom:1px solid var(--rule-soft); display:flex; gap:16px; align-items:baseline; }
+  ul.awards li:last-child{ border-bottom:none; }
+  ul.awards li .yr{ font-size:14px; color:var(--ink-faint); min-width:78px; flex:none; }
+  ul.awards li .txt{ font-size:17px; }
+
+  .skill-row{ display:grid; grid-template-columns:150px 1fr; gap:18px; padding:14px 0; border-bottom:1px solid var(--rule-soft); align-items:baseline; }
+  .skill-row:last-child{ border-bottom:none; }
+  .skill-row .k{ font-family:var(--serif-disp); font-size:19px; font-weight:600; color:var(--ink); }
+  .skill-row .v{ font-size:16.5px; color:var(--ink-soft); }
+  @media(max-width:560px){ .skill-row{ grid-template-columns:1fr; gap:3px; } }
+
+  .literary{ background:var(--paper-deep); border:1px solid var(--rule); border-radius:4px; padding:30px 34px; margin-top:22px; }
+
+  .contact-grid{ display:flex; flex-wrap:wrap; gap:14px 40px; margin-top:20px; }
+  .contact-grid div .k{ font-family:var(--serif-body); font-size:13px; color:var(--ink-faint); letter-spacing:.1em; text-transform:uppercase; }
+  .contact-grid div .v{ font-size:18px; }
+
+  footer{ border-top:1px solid var(--rule-soft); padding:30px 0 50px; }
+  footer .wrap{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; color:var(--ink-faint); font-size:13.5px; }
+
+  .reveal{ opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal.in{ opacity:1; transform:none; }
+  @media(prefers-reduced-motion:reduce){ .reveal{ opacity:1; transform:none; } html{ scroll-behavior:auto; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="brand">Yuanchen Li</div>
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#research">Research</a></li>
+      <li><a href="#publications">Publications</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#honors">Honors</a></li>
+      <li><a href="#beyond">Beyond</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ==================== HERO ==================== -->
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <h1>Yuanchen&nbsp;Li<span class="cn">李 源 宸</span></h1>
+        <p class="role">Undergraduate researcher in computer vision and 3D reconstruction — 3D Gaussian Splatting, world models, and AI for social science.</p>
+        <p class="meta">Hangzhou Dianzi University, China &nbsp;·&nbsp; <a href="mailto:lyc480672664@gmail.com">lyc480672664@gmail.com</a></p>
+        <div class="links">
+          <!-- TODO: 把链接换成你的真实地址；用不到的删掉。简历命名 cv.pdf 放同目录 -->
+          <a class="cv" href="CV.pdf">Curriculum Vitae</a>
+          <a href="https://github.com/Luke-liyy" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://orcid.org/0009-0002-0954-6053" target="_blank" rel="noopener">ORCID</a>
+        </div>
+      </div>
+      <div class="seal-block">
+        <img class="portrait" src="Yuanchen%20Li.png" alt="Yuanchen Li" onerror="this.style.display='none'" />
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ==================== ABOUT ==================== -->
+<section id="about">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num">I</span><h2>About</h2></div>
+    <p class="lead reveal">I am a junior in Computer Science at the Honors College of Hangzhou Dianzi University, with a record of merit-based scholarships. My current research focuses on computer vision and 3D reconstruction, particularly 3D Gaussian Splatting.</p>
+    <p class="reveal muted">My broader interests extend to world models for embodied spatial reasoning, and to AI for social science—an area I approach from a long-standing immersion in classical Chinese literature, with interests in computational philology, the decipherment of ancient scripts, and the cultural-historical analysis of textual traditions.</p>
+  </div>
+</section>
+
+<!-- ==================== EDUCATION ==================== -->
+<section id="education">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num">II</span><h2>Education</h2></div>
+    <div class="entry reveal">
+      <div class="when">2023 — 2027</div>
+      <div class="what">
+        <h3>B.Eng. in Computer Science</h3>
+        <div class="org">Hangzhou Dianzi University · Honors College</div>
+        <div class="desc">Selected coursework: Data Mining (98), Deep Learning (97), Compiler Construction (95), Algorithms &amp; Data Structures (92).</div>
+      </div>
+    </div>
+    <div class="entry reveal">
+      <div class="when">2025 summer</div>
+      <div class="what">
+        <h3>Visiting Student</h3>
+        <div class="org">University of California, Berkeley · Summer Session</div>
+        <div class="desc">Led the team to a course showcase selection (UC Berkeley CS184 Showcase).</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== RESEARCH ==================== -->
+<section id="research">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num">III</span><h2>Research</h2></div>
+    <p class="reveal">My work spans neural 3D representations and the computational study of culture and text. I am interested in how structure—geometric, semantic, or historical—can be encoded, supervised, and recovered from sparse or incomplete observations.</p>
+    <div class="tags reveal">
+      <span>3D Reconstruction</span>
+      <span>Computer Vision</span>
+      <span>World Models</span>
+      <span>Embodied Spatial Reasoning</span>
+      <span>AI for Social Science</span>
+      <span>Computational Philology</span>
+      <span>Decipherment of Ancient Scripts</span>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== PUBLICATIONS ==================== -->
+<section id="publications">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num">IV</span><h2>Publications &amp; Selected Writing</h2></div>
+
+    <h3 class="pub-subhead reveal">Research Papers</h3>
+    <div class="pub reveal">
+      <div class="idx">1</div>
+      <div>
+        <div class="ptitle">SOS-3D: SDF-Guided Organ Segmentation with 3D Gaussian Splatting from Sparse-View CT<span class="badge">Under Review</span></div>
+        <div class="authors"><b>Yuanchen Li</b>, Tarek S. Elaydi, Haoyu Yang, Minghao Chen*, et al.</div>
+        <div class="venue">Manuscript under review, 2026.</div>
+
+      </div>
+    </div>
+
+    <h3 class="pub-subhead literary-head reveal">Literary Publications</h3>
+    <div class="pub reveal">
+      <div class="idx">2</div>
+      <div>
+        <div class="ptitle">春江浪子<span class="badge">Literary Publication</span></div>
+        <div class="authors"><b>Yuanchen Li</b></div>
+        <div class="venue"><i>Chinese Writers</i> / 《中国作家》, No. 753, 2023. Essay / literary prose.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== EXPERIENCE ==================== -->
+<section id="experience">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num">V</span><h2>Research &amp; Experience</h2></div>
+    <div class="entry reveal">
+      <div class="when">Sep 2024 — Mar 2026</div>
+      <div class="what">
+        <h3>Computer Vision Research Project</h3>
+        <div class="org">Independent Research · First author</div>
+        <div class="desc">Applied 3D Gaussian Splatting to sparse-view CT reconstruction and 3D-consistent multi-organ segmentation, addressing the clinical trade-off between radiation dose and volumetric accuracy. Built an SDF-based Gaussian segmentation framework—converting organ masks into signed distance fields and assigning covariance-aware soft labels via trilinear SDF sampling—reaching a mean Dice of 0.927, well above the nnU-Net baseline (0.84).</div>
+      </div>
+    </div>
+    <div class="entry reveal">
+      <div class="when">2023 — Present</div>
+      <div class="what">
+        <h3>Education Research: Classical Chinese Education &amp; Student Development</h3>
+        <div class="org">Independent Research · Lead</div>
+        <div class="desc">A mixed-methods study—surveys paired with semi-structured interviews—tracking 40+ former classmates across the six years after primary school, examining how a classics-centered primary curriculum shaped their later academic performance, character, and cultural disposition. Designed the questionnaire and interview protocol and stratified participants into three cohorts (the domestic gaokao track; domestic non-gaokao and international tracks; and overseas study) to compare this classical-education model against standard compulsory education—across Chinese-language attainment, literary writing, social adjustment, and reasoning and aesthetic sensibility. Analysis ongoing.</div>
+      </div>
+    </div>
+    <div class="entry reveal">
+      <div class="when">2022</div>
+      <div class="what">
+        <h3>Editor</h3>
+        <div class="org">Shuangsong</div>
+        <div class="desc">Served as an editor for <i>Shuangsong</i> / 《双松》 (Issue 31 ), contributing to manuscript selection, textual revision, editorial coordination, and literary curation.</div>
+      </div>
+    </div>
+    <div class="entry reveal">
+      <div class="when">Jun 2025 — Aug 2025</div>
+      <div class="what">
+        <h3>Computer Graphics Project (UC Berkeley CS184)</h3>
+        <div class="org">UC Berkeley · Project lead</div>
+        <div class="desc">Led an end-to-end real-time VR gaming pipeline built on 3D Gaussian Splatting: multi-view scene capture, camera-pose extraction, COLMAP-based Structure-from-Motion, and Gaussian scene reconstruction for photorealistic novel-view synthesis. Extended Nerfstudio's Splatfacto for online scene adaptation—incrementally updating exported Gaussians in ~0.5 s for interactive VR without full retraining. Selected for the CS184 Showcase.</div>
+      </div>
+    </div>
+    <div class="entry reveal">
+      <div class="when">Mar 2025 — Jun 2025</div>
+      <div class="what">
+        <h3>Computer Systems &amp; Architecture Projects</h3>
+        <div class="org">Course Project</div>
+        <div class="desc">Built a von Neumann-style computer-system simulator in C based on the RV32IM ISA—core execution, trap and exception handling, context switching, system calls, user-program loading, and a simple file system supporting batch execution on Nanos-lite. Designed and debugged a five-stage pipelined RV64 CPU in Chisel (IF/ID/EX/MEM/WB) with units for ALU operations, branching, memory access, multiplication/division, and CSR handling; implemented data forwarding, load-use hazard detection, CSR read/write, and exception/interrupt handling to improve pipeline correctness and efficiency.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== HONORS ==================== -->
+<section id="honors">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num">VI</span><h2>Honors &amp; Awards</h2></div>
+    <ul class="awards reveal">
+      <li><span class="yr">2023 — 2025</span><span class="txt">Outstanding Undergraduate Scholarship (two consecutive academic years)</span></li>
+      <li><span class="yr">2024</span><span class="txt">Second Prize — Zhejiang College Student Securities Investment Competition (Quantitative Trading Track)</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ==================== SKILLS ==================== -->
+<section id="skills">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num">VII</span><h2>Skills</h2></div>
+    <div class="skill-row reveal"><div class="k">Systems</div><div class="v">C · RISC-V Assembly</div></div>
+    <div class="skill-row reveal"><div class="k">Deep Learning</div><div class="v">PyTorch · CUDA</div></div>
+    <div class="skill-row reveal"><div class="k">Collaboration</div><div class="v">Leadership &amp; teamwork · research mentorship · cross-functional collaboration</div></div>
+  </div>
+</section>
+
+<!-- ==================== BEYOND RESEARCH ==================== -->
+<section id="beyond">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num">VIII</span><h2>Beyond Research</h2></div>
+    <p class="reveal muted">My background in classical Chinese literature predates my work in computer science. I read and compose in the classical tradition, with literary work published in <i>Chinese Writers</i>, and have given primary schools general-education lectures on cross-cultural philosophy of knowledge.</p>
+    <div class="literary reveal">
+      <!-- TODO: 在此放入你本人的原创诗词作品（可保留中文）。 -->
+      <p style="font-size:17px; margin:0 0 14px;">A small collection of my own work in verse and prose — classical-style poetry, modern poems, and <i>fu</i> (rhapsody).</p>
+      <a href="writing.html" style="font-size:16px; border-bottom:1px solid var(--seal); padding-bottom:2px;">Read selected works &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== CONTACT ==================== -->
+<section id="contact">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num">IX</span><h2>Contact</h2></div>
+    <p class="reveal">I am always glad to discuss research collaborations, summer opportunities, or anything at the intersection of machine learning and the humanities.</p>
+    <div class="contact-grid reveal">
+      <div><div class="k">Email</div><div class="v"><a href="mailto:liyc@hdu.edu.cn">liyc@hdu.edu.cn</a><br><a href="mailto:lyc480672664@gmail.com">lyc480672664@gmail.com</a></div></div>
+      <!-- TODO: 改成你的 GitHub 用户名 -->
+      <div><div class="k">GitHub</div><div class="v"><a href="https://github.com/Luke-liyy">@Luke-liyy</a></div></div>
+      <div><div class="k">Location</div><div class="v">Hangzhou, China</div></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="yr"></span> Yuanchen Li · 李源宸</span>
+    <span>Built and maintained by hand.</span>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('yr').textContent = new Date().getFullYear();
+  const io = new IntersectionObserver((es)=>{ es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} }); }, { threshold:0.12 });
+  document.querySelectorAll('.reveal').forEach((el,i)=>{ el.style.transitionDelay=(i%4*60)+'ms'; io.observe(el); });
+  const links=[...document.querySelectorAll('nav ul a')];
+  const map=links.map(a=>({a,sec:document.querySelector(a.getAttribute('href'))})).filter(x=>x.sec);
+  const spy=new IntersectionObserver((es)=>{ es.forEach(e=>{ if(e.isIntersecting){ links.forEach(l=>l.classList.remove('active')); const m=map.find(x=>x.sec===e.target); if(m) m.a.classList.add('active'); } }); }, { rootMargin:'-45% 0px -50% 0px' });
+  map.forEach(x=>spy.observe(x.sec));
+</script>
+</body>
+</html>
