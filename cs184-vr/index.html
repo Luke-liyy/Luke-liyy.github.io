@@ -1,0 +1,402 @@
+<!--
+  Real-time VR Gaming Pipeline based on 3D Gaussian Splatting
+  Project page — companion to ../index.html. Styled to match the main homepage.
+  Original report content preserved; layout reworked into the paper/seal-red serif system.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Real-time VR Gaming with 3D Gaussian Splatting · Yuanchen Li</title>
+<meta name="description" content="UC Berkeley CS184 final project — a real-time VR gaming pipeline built on 3D Gaussian Splatting. Selected for the CS184 Showcase." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Noto+Serif+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --paper:#FBF8F1; --paper-deep:#F3EDE0;
+    --ink:#1F1B16; --ink-soft:#5B5347; --ink-faint:#8C8475;
+    --seal:#9C2B25; --seal-deep:#7A201C;
+    --rule:#DAD0BE; --rule-soft:#E8E0D0;
+    --maxw:880px;
+    --serif-disp:'Cormorant Garamond','Noto Serif SC',Georgia,serif;
+    --serif-body:'Spectral','Noto Serif SC',Georgia,serif;
+    --serif-cn:'Noto Serif SC','Spectral',serif;
+    --mono:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; scroll-padding-top:80px; }
+  body{ background:var(--paper); color:var(--ink); font-family:var(--serif-body); font-size:18px; line-height:1.75;
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+    background-image:radial-gradient(rgba(120,100,60,.025) 1px, transparent 1px); background-size:3px 3px; }
+  ::selection{ background:rgba(156,43,37,.16); }
+  a{ color:var(--seal); text-decoration:none; transition:color .2s ease; }
+  a:hover{ color:var(--seal-deep); }
+
+  nav{ position:sticky; top:0; z-index:50; background:rgba(251,248,241,.82);
+    backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); border-bottom:1px solid var(--rule-soft); }
+  nav .nav-inner{ max-width:var(--maxw); margin:0 auto; padding:14px 28px; display:flex; align-items:center; justify-content:space-between; }
+  nav .brand{ font-family:var(--serif-disp); font-size:21px; font-weight:600; letter-spacing:.02em; color:var(--ink); }
+  nav .back{ font-size:13.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-soft); }
+  nav .back:hover{ color:var(--seal); }
+
+  .wrap{ max-width:var(--maxw); margin:0 auto; padding:0 28px; }
+
+  /* ---------- HERO ---------- */
+  header.hero{ padding:56px 0 36px; }
+  .showcase{ margin:0 0 34px; }
+  .showcase img{ width:100%; height:auto; display:block; border:1px solid var(--rule);
+    box-shadow:0 12px 38px rgba(60,40,10,.14); border-radius:2px; }
+  .showcase .cap{ margin-top:12px; text-align:center; font-style:italic; color:var(--ink-soft); font-size:14.5px; letter-spacing:.02em; }
+  header.hero .eyebrow{ font-family:var(--serif-body); color:var(--seal); letter-spacing:.2em; font-size:13px; text-transform:uppercase; margin-bottom:18px; }
+  header.hero h1{ font-family:var(--serif-disp); font-weight:700; font-size:clamp(34px,5.4vw,52px); line-height:1.08; letter-spacing:.005em; }
+  header.hero .subtitle{ margin-top:18px; color:var(--ink-soft); font-style:italic; font-size:19px; max-width:38em; }
+  header.hero .meta-row{ margin-top:22px; display:flex; flex-wrap:wrap; gap:8px 22px; color:var(--ink-faint); font-size:14.5px; letter-spacing:.03em; }
+  header.hero .meta-row .dot{ color:var(--rule); }
+  header.hero .links{ margin-top:26px; display:flex; flex-wrap:wrap; gap:10px 8px; }
+  header.hero .links a{ font-size:13.5px; letter-spacing:.05em; text-transform:uppercase; padding:7px 14px; border:1px solid var(--rule);
+    border-radius:2px; color:var(--ink-soft); background:var(--paper); transition:all .2s ease; }
+  header.hero .links a:hover{ border-color:var(--seal); color:var(--seal); background:#fff; }
+  header.hero .links a.primary{ border-color:var(--seal); color:#fff; background:var(--seal); }
+  header.hero .links a.primary:hover{ background:var(--seal-deep); border-color:var(--seal-deep); }
+
+  /* ---------- SECTIONS ---------- */
+  section.major{ padding:46px 0; border-top:1px solid var(--rule-soft); }
+  .sec-head{ display:flex; align-items:baseline; gap:16px; margin-bottom:24px; }
+  .sec-num{ font-family:var(--serif-disp); color:var(--seal); font-size:16px; font-weight:600; border:1px solid var(--seal);
+    border-radius:2px; min-width:34px; height:30px; padding:0 8px; flex:none; display:grid; place-items:center; transform:translateY(-2px); }
+  .sec-head h2{ font-family:var(--serif-disp); font-weight:600; font-size:clamp(26px,3.6vw,34px); line-height:1.1; }
+
+  h3.sub{ font-family:var(--serif-disp); font-size:23px; font-weight:600; margin:30px 0 10px; color:var(--ink); letter-spacing:.005em; }
+  h3.sub:first-child{ margin-top:0; }
+
+  p{ font-size:17.5px; }
+  p + p{ margin-top:1em; }
+  p.lead{ font-size:19px; }
+  .muted{ color:var(--ink-soft); }
+
+  /* ---------- LISTS ---------- */
+  ul.bullets, ol.bullets{ margin:12px 0 0 0; padding:0; list-style:none; counter-reset:b; }
+  ul.bullets li, ol.bullets li{ position:relative; padding:8px 0 8px 28px; font-size:17px; color:var(--ink); }
+  ul.bullets li::before{ content:''; position:absolute; left:6px; top:20px; width:8px; height:1px; background:var(--seal); }
+  ol.bullets{ counter-reset:b; }
+  ol.bullets li{ counter-increment:b; padding-left:36px; }
+  ol.bullets li::before{ content:counter(b,upper-roman) '.'; position:absolute; left:0; top:8px; width:auto; height:auto; background:none;
+    font-family:var(--serif-disp); color:var(--seal); font-weight:600; font-size:15px; letter-spacing:.03em; }
+  ul.bullets li b, ol.bullets li b{ color:var(--ink); font-weight:600; }
+
+  /* ---------- IMAGES / FIGURES ---------- */
+  figure.fig{ margin:24px 0; }
+  figure.fig img{ width:100%; height:auto; display:block; border:1px solid var(--rule);
+    box-shadow:0 6px 22px rgba(60,40,10,.10); border-radius:2px; }
+  figure.fig figcaption{ margin-top:10px; text-align:center; font-style:italic; color:var(--ink-soft); font-size:14.5px; }
+
+  .pair{ display:grid; grid-template-columns:1fr 1fr; gap:18px; margin:24px 0; }
+  @media(max-width:640px){ .pair{ grid-template-columns:1fr; } }
+  .pair figure{ margin:0; }
+  .pair img{ width:100%; height:auto; display:block; border:1px solid var(--rule);
+    box-shadow:0 6px 22px rgba(60,40,10,.10); border-radius:2px; }
+  .pair figcaption{ margin-top:8px; text-align:center; font-style:italic; color:var(--ink-soft); font-size:14px; }
+
+  /* ---------- CODE ---------- */
+  code{ font-family:var(--mono); font-size:.88em; background:var(--paper-deep); padding:1px 6px; border-radius:2px; color:var(--seal-deep); }
+  pre{ margin:18px 0; padding:20px 22px; background:#1F1B16; color:#F3EDE0; border-radius:3px;
+    border:1px solid var(--ink); overflow-x:auto; font-family:var(--mono); font-size:13.5px; line-height:1.6; }
+  pre code{ background:transparent; color:inherit; padding:0; font-size:inherit; }
+  pre .cmt{ color:#8C8475; font-style:italic; }
+
+  /* ---------- METRICS ---------- */
+  .metrics{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin:24px 0 10px; }
+  @media(max-width:680px){ .metrics{ grid-template-columns:repeat(2,1fr); } }
+  .metric{ padding:18px 14px; background:var(--paper-deep); border:1px solid var(--rule); border-radius:3px; text-align:center; }
+  .metric .v{ font-family:var(--serif-disp); font-size:28px; font-weight:600; color:var(--seal); line-height:1.05; }
+  .metric .k{ margin-top:6px; font-size:13px; color:var(--ink-soft); letter-spacing:.04em; }
+
+  /* ---------- TEAM ---------- */
+  .team{ display:grid; grid-template-columns:repeat(2,1fr); gap:14px 22px; margin-top:8px; }
+  @media(max-width:560px){ .team{ grid-template-columns:1fr; } }
+  .team .m{ padding:16px 18px; border:1px solid var(--rule-soft); border-radius:3px; background:var(--paper); }
+  .team .m.lead{ border-color:var(--seal); background:#fff; }
+  .team .m .name{ font-family:var(--serif-disp); font-size:19px; font-weight:600; }
+  .team .m.lead .name::after{ content:'Project lead'; display:inline-block; margin-left:8px; font-family:var(--serif-body); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--seal); border:1px solid var(--seal); padding:1px 6px; border-radius:2px; vertical-align:2px; }
+  .team .m .role{ margin-top:6px; color:var(--ink-soft); font-size:15px; line-height:1.55; }
+
+  /* ---------- REFERENCE LIST ---------- */
+  .refs{ list-style:none; margin-top:10px; }
+  .refs li{ padding:11px 0; border-bottom:1px solid var(--rule-soft); font-size:16.5px; }
+  .refs li:last-child{ border-bottom:none; }
+  .refs li .lbl{ font-family:var(--serif-body); font-size:11.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); margin-right:12px; }
+
+  .callout{ background:var(--paper-deep); border-left:3px solid var(--seal); padding:16px 20px; margin:22px 0; font-style:italic; color:var(--ink-soft); }
+
+  footer{ border-top:1px solid var(--rule-soft); padding:34px 0 56px; margin-top:20px; }
+  footer .wrap{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; color:var(--ink-faint); font-size:13.5px; }
+
+  .reveal{ opacity:0; transform:translateY(16px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal.in{ opacity:1; transform:none; }
+  @media(prefers-reduced-motion:reduce){ .reveal{ opacity:1; transform:none; } html{ scroll-behavior:auto; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="brand">Yuanchen Li</div>
+    <a class="back" href="../index.html">&larr; Back to home</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <figure class="showcase reveal">
+      <img src="cs184showcase.png" alt="UC Berkeley CS184 Showcase — Real-time VR Gaming with 3D Gaussian Splatting" />
+      <div class="cap">Selected for the UC Berkeley CS184 Showcase, Summer 2025.</div>
+    </figure>
+    <div class="eyebrow reveal">UC Berkeley CS184 · Final Project · Showcase Selected</div>
+    <h1 class="reveal">Real-time VR Gaming Pipeline based on 3D Gaussian Splatting</h1>
+    <p class="subtitle reveal">Splatfacto improvements, 3DGS direct rasterization, a Unity stylized shader, and real-time online adaptation — an end-to-end pipeline that brings 3D Gaussian Splatting into a live VR gaming loop.</p>
+    <div class="meta-row reveal">
+      <span>Jun 2025 — Aug 2025</span>
+      <span class="dot">·</span>
+      <span>Team of 4</span>
+      <span class="dot">·</span>
+      <span>Project lead</span>
+    </div>
+    <div class="links reveal">
+      <a class="primary" href="https://yllivct.github.io/finalproject-vr/final-report/index.html" target="_blank" rel="noopener">Original Report</a>
+      <a href="https://docs.google.com/presentation/d/1e1MfzwDeM5sMufKstMoeIVbf6FXoECNg/edit?usp=sharing" target="_blank" rel="noopener">Slides</a>
+      <a href="https://drive.google.com/file/d/1XRSc9MBv1U8WQehqmVPPClXwpHC936ie/view?usp=sharing" target="_blank" rel="noopener">Cyberpunk Demo</a>
+      <a href="https://drive.google.com/file/d/1z2whwAXHTwakzi7Toj7iCwKV7kWTav08/view?usp=sharing" target="_blank" rel="noopener">Room Demo</a>
+      <a href="https://drive.google.com/file/d/1mqMTbkxleVjBEfiODGoGE1zssvUoDfW-/view?usp=sharing" target="_blank" rel="noopener">Shader Demo</a>
+    </div>
+  </div>
+</header>
+
+<!-- ============ I · OVERVIEW ============ -->
+<section class="major" id="overview">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num">I</span><h2>Overview</h2></div>
+    <p class="lead reveal">Building on Splatfacto, we make real-time 3D VR gaming possible, with potential extension to nearly all AAA titles. Using previously exported Gaussians as a starting point, we run a few optimisation steps on new data, adapting within 0.5 seconds. Moreover, 3DGS supports direct rasterisation, achieving 90 FPS rendering. Compared with traditional Neural Radiance Fields (NeRF) — which require hours of training and ray-marching — 3DGS offers near-instant training and direct GPU rasterization, enabling high-quality real-time rendering.</p>
+    <p class="reveal">For this project, we reconstructed a statue in <i>Cyberpunk 2077</i> using 825 scenes captured from the game.</p>
+    <figure class="fig reveal">
+      <img src="final.png" alt="Final result: reconstruction of Cyberpunk 2077 scenes" />
+      <figcaption>Final result: reconstruction of Cyberpunk 2077 scenes.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ II · TEAM ============ -->
+<section class="major" id="team">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num">II</span><h2>Team &amp; Contributions</h2></div>
+    <div class="team reveal">
+      <div class="m lead">
+        <div class="name">Yuanchen Li</div>
+        <div class="role">Implemented incremental development of Splatfacto, improving it by using high-order spherical harmonics to guide low-order harmonics (shortening rendering time), and by applying lossless octree compression to reduce the runtime burden on VR devices.</div>
+      </div>
+      <div class="m">
+        <div class="name">Yihong Zhai</div>
+        <div class="role">Contributed to the composite shader and collaborated with Yuanchen Li to implement the initial functionality for immersive viewing of 3D Gaussian scenes in virtual reality.</div>
+      </div>
+      <div class="m">
+        <div class="name">Songyan Li</div>
+        <div class="role">Developed tools to generate image datasets and relevant pose information automatically, exporting COLMAP-compatible files for efficient 3DGS model training.</div>
+      </div>
+      <div class="m">
+        <div class="name">Yanshi Liang</div>
+        <div class="role">Configured and optimized a high-performance cloud GPU environment, managed all necessary dependencies, and successfully ran Splatfacto to train the 3DGS model.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ III · PIPELINE ============ -->
+<section class="major" id="pipeline">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num">III</span><h2>Pipeline</h2></div>
+
+    <h3 class="sub reveal">Data capture and calibration</h3>
+    <p class="reveal">We capture images from AAA games such as Cyberpunk 2077. Using Cyber Engine Tweaks, the official mod constructer, we capture the character's position and view every two seconds, trigger an external Python script via <code>trigger_screenshot.txt</code> to grab screenshots with OBS Studio, and convert the recorded <code>data.csv</code> into COLMAP-format <code>cameras.txt</code> and <code>images.txt</code>.</p>
+    <p class="reveal">Due to the complexity of the game graphics, we apply blurring techniques to the images, including Gaussian blur and K-means clustering for color simplification, to reduce modeling difficulty.</p>
+    <div class="pair reveal">
+      <figure>
+        <img src="1-1.png" alt="Original captured frame" />
+        <figcaption>Before</figcaption>
+      </figure>
+      <figure>
+        <img src="1-2.png" alt="Frame after Gaussian blur and K-means color simplification" />
+        <figcaption>After</figcaption>
+      </figure>
+    </div>
+    <p class="reveal">All files are then fed into COLMAP for sparse reconstruction to generate a 3D point-cloud model.</p>
+    <div class="pair reveal">
+      <figure><img src="2-1.png" alt="COLMAP sparse reconstruction view 1" /></figure>
+      <figure><img src="2-2.png" alt="COLMAP sparse reconstruction view 2" /></figure>
+    </div>
+
+    <h3 class="sub reveal">Online adaptation</h3>
+    <p class="reveal">Starting from previously exported Gaussians, we run a few optimisation steps on newly arriving data and adapt within ~0.5 seconds to support real-time VR interaction and rendering.</p>
+
+    <h3 class="sub reveal">3DGS direct rasterization</h3>
+    <p class="reveal">In the rasterisation process, we project Gaussian primitives into the target camera view for image-space rendering, which yields improved visual quality and stable real-time frame rates (up to ~90 FPS in VR).</p>
+
+    <h3 class="sub reveal">Unity stylized compositing shader</h3>
+    <p class="reveal">In Unity URP, we implemented a sketch-style composite shader for 3D Gaussian Splatting that runs entirely in screen space (post-render). It applies tone quantization, Sobel edge detection, cross-hatching, and paper-grain noise, achieving real-time, customizable, VR-compatible illustrative effects.</p>
+  </div>
+</section>
+
+<!-- ============ IV · IMPLEMENTATION DETAILS ============ -->
+<section class="major" id="impl-details">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num">IV</span><h2>Implementation Details</h2></div>
+
+    <h3 class="sub reveal">Producer: data capture</h3>
+    <ul class="bullets reveal">
+      <li><b>Transport recommendations.</b> Intra-host &rarr; shared memory via <code>mmap</code> ring buffer; cross-host &rarr; UDP or WebRTC DataChannel (PR-SCTP with partial reliability).</li>
+      <li><b>Compression.</b> Use libjpeg-turbo (JPEG) or libwebp (WebP). 720p is sufficient for training.</li>
+      <li><b>Pose.</b> Unify world coordinates and camera intrinsics/extrinsics <code>(fx, fy, cx, cy + [R|t])</code> and attach per-frame timestamps.</li>
+    </ul>
+    <p class="reveal">Python capture &amp; UDP sender (minimal):</p>
+    <pre class="reveal"><code><span class="cmt"># producer_send.py</span>
+import cv2, socket, struct, json, time
+from turbojpeg import TurboJPEG
+jpeg = TurboJPEG()
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+DEST = ("127.0.0.1", 50051)
+
+def send_frame(frame_bgr, intr, extr, seq):
+    jpg = jpeg.encode(frame_bgr, quality=85)  <span class="cmt"># compress</span>
+    header = {
+        "seq": seq, "ts": time.time_ns(),
+        "intr": intr,          <span class="cmt"># {"fx":..., "fy":..., "cx":..., "cy":...}</span>
+        "extr": extr,          <span class="cmt"># {"R":[9], "t":[3]}</span>
+    }
+    h = json.dumps(header).encode("utf-8")
+    pkt = struct.pack("!I", len(h)) + h + jpg
+    sock.sendto(pkt, DEST)
+
+<span class="cmt"># example capture</span>
+cap = cv2.VideoCapture(0)  <span class="cmt"># or frames from the game render pipeline</span>
+seq = 0
+while True:
+    ret, frame = cap.read()
+    if not ret: break
+    intr = {"fx":800,"fy":800,"cx":640,"cy":360}
+    extr = {"R":[1,0,0,0,1,0,0,0,1], "t":[0,0,0]}
+    send_frame(frame, intr, extr, seq)
+    seq += 1
+    time.sleep(1/5)  <span class="cmt"># 5 FPS</span></code></pre>
+
+    <h3 class="sub reveal">Incremental training (Splatfacto / gsplat modifications)</h3>
+    <ol class="bullets reveal">
+      <li><b>Data ingestion and buffering.</b> Build a lock-free ring buffer (or asyncio queue) to store the latest N seconds of frames (e.g., a 2&ndash;4 s window). Trigger policy: fire a tuning step every 10 frames or 0.5 s.</li>
+      <li><b>Optimize only Gaussians in relevant regions.</b> Project the new frame to screen, compute a reprojection-error heatmap, back-project and cluster to hit Gaussian IDs, then set only those parameters to <code>requires_grad=True</code> and freeze the rest. Typical parameters: &mu;(xyz), scale(3), rot(quat4), opacity(1), sh(N) with SH degree 0&ndash;3. In Splatfacto these are PyTorch tensors; use masked indexing to select subsets.</li>
+      <li><b>Optimizer and steps.</b> Adam with a small learning rate (<code>1e-3</code> &rarr; <code>1e-4</code>), ~100 steps per round. Loss = L2 (or L1) on new frames + detail/edge-weighted terms + regularization (anti-drift). Density control by new-view statistics only: growth by cloning/perturbing around high-gradient or sparse-coverage projections; pruning by marking long-unhit / low-contribution Gaussians and removing in batches.</li>
+      <li><b>Versioning and persistent IDs.</b> Assign a global ID per Gaussian; record adds/deletes; keep the last snapshot/hash for diffing.</li>
+    </ol>
+    <p class="reveal">Incremental training main loop:</p>
+    <pre class="reveal"><code><span class="cmt"># trainer_incremental.py</span>
+opt = torch.optim.Adam(params=get_frozen_aware_params(model), lr=1e-3)
+last_snapshot = None
+SEQ = 0
+
+while True:
+    batch = ring_buffer.pop_last_10_frames_or_timeout(0.5)
+    if not batch: continue
+
+    <span class="cmt"># select relevant Gaussians</span>
+    active_ids = select_gaussians_by_reproj_error(model, batch)
+    model.set_trainable_subset(active_ids)  <span class="cmt"># others requires_grad=False</span>
+
+    for step in range(100):
+        loss = render_loss_on_batch(model, batch)
+        opt.zero_grad(set_to_none=True)
+        loss.backward()
+        clip_gradients(model, max_norm=1.0)
+        opt.step()
+
+    <span class="cmt"># local density control (grow/prune)</span>
+    grow_ids, prune_ids = density_control(model, batch)
+    apply_grow_prune(model, grow_ids, prune_ids)
+
+    <span class="cmt"># compute diff</span>
+    diff = compute_param_diff(model, last_snapshot, eps_pos=1e-3, eps_rot=1e-3, eps_sh=2e-3)
+    pkt = pack_diff_binary(diff, seq=SEQ)
+    send_udp(pkt)
+    last_snapshot = take_lightweight_snapshot(model)
+    SEQ += 1</code></pre>
+
+    <h3 class="sub reveal">Shaders</h3>
+    <p class="reveal">The sketch-style effect is achieved via a screen-space composite shader. Once all Gaussians have been rendered into a temporary render target (<code>_GaussianSplatRT</code>), the composite shader processes this texture in a full-screen pass and produces the final output. The algorithm comprises several stages:</p>
+    <ul class="bullets reveal">
+      <li><b>Greyscale quantisation.</b> The RGB colour of each pixel is converted to linear space and then to a single luminance value. This value is quantised into a specified number of tone bands (e.g. 4&ndash;8), producing flat regions of consistent brightness reminiscent of tonal blocks in pencil sketches.</li>
+      <li><b>Sobel edge detection.</b> A Sobel operator computes the gradient magnitude of the luminance. Pixels with high gradient are considered edges. A smooth threshold and softness parameter control the strength of the resulting contour lines; edges are used later to darken outlines and emphasise structure.</li>
+      <li><b>Cross-hatching overlay.</b> For darker quantised tones, the shader overlays sets of parallel hatch lines at multiple angles (e.g. 0&deg;, 45&deg;, 90&deg;, 135&deg;). Each line set is generated procedurally using screen-space UV coordinates. Darker areas receive more hatch layers, while lighter areas receive few or none.</li>
+      <li><b>Paper grain noise.</b> A simple pseudo-random noise function adds small perturbations to the luminance, simulating paper grain.</li>
+      <li><b>Compositing and output.</b> The quantised greyscale image, edge mask, hatch overlays and noise are combined. The edges multiply the result to darken outlines. The final colour is multiplied by a tint (default white) to allow for tonal changes. The shader uses the blend mode <code>Blend One Zero</code>, which overwrites the colour buffer, ensuring the effect is visible even when no opaque background is drawn.</li>
+    </ul>
+    <p class="reveal">The shader runs as the last step in the URP renderer, after all opaque and transparent passes, to avoid being overwritten by subsequent features. Because the algorithm operates only on the screen buffer, its complexity is independent of the number of Gaussians rendered.</p>
+    <div class="pair reveal">
+      <figure><img src="1.jpg" alt="Stylized shader output 1" /></figure>
+      <figure><img src="2.jpg" alt="Stylized shader output 2" /></figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============ V · RESULTS ============ -->
+<section class="major" id="results-performance">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num">V</span><h2>Results &amp; Performance</h2></div>
+    <div class="metrics reveal">
+      <div class="metric"><div class="v">~90</div><div class="k">FPS on VR HMD</div></div>
+      <div class="metric"><div class="v">~0.5 s</div><div class="k">Frame adaptation</div></div>
+      <div class="metric"><div class="v">3&times;</div><div class="k">Speedup vs. baseline</div></div>
+      <div class="metric"><div class="v">825</div><div class="k">Cyberpunk scenes</div></div>
+    </div>
+    <ul class="bullets reveal">
+      <li>Direct rasterisation reaches around 90 FPS on VR devices.</li>
+      <li>We improved Splatfacto by using high-order spherical harmonics to guide low-order harmonics (shortening rendering time) and by applying lossless octree compression to reduce the runtime burden on VR devices. These yield roughly a 3&times; speedup in visual rendering for VR.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ VI · LIMITATIONS ============ -->
+<section class="major" id="limitations">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num">VI</span><h2>Limitations &amp; Outstanding Work</h2></div>
+    <p class="reveal">Minor issues remain in optimising newly added Gaussians, so a fully seamless in-game video is not yet available. We will further improve the stability and efficiency of online incremental optimisation.</p>
+  </div>
+</section>
+
+<!-- ============ VII · MATERIALS & REFERENCES ============ -->
+<section class="major" id="references">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num">VII</span><h2>Materials &amp; References</h2></div>
+    <ul class="refs reveal">
+      <li><span class="lbl">Report</span><a href="https://yllivct.github.io/finalproject-vr/final-report/index.html" target="_blank" rel="noopener">Original full report (course site)</a></li>
+      <li><span class="lbl">Slides</span><a href="https://docs.google.com/presentation/d/1e1MfzwDeM5sMufKstMoeIVbf6FXoECNg/edit?usp=sharing" target="_blank" rel="noopener">Presentation deck</a></li>
+      <li><span class="lbl">Video</span><a href="https://drive.google.com/file/d/1XRSc9MBv1U8WQehqmVPPClXwpHC936ie/view?usp=sharing" target="_blank" rel="noopener">Cyberpunk 2077 scene reconstruction</a></li>
+      <li><span class="lbl">Video</span><a href="https://drive.google.com/file/d/1z2whwAXHTwakzi7Toj7iCwKV7kWTav08/view?usp=sharing" target="_blank" rel="noopener">3DGS room reconstruction</a></li>
+      <li><span class="lbl">Video</span><a href="https://drive.google.com/file/d/1mqMTbkxleVjBEfiODGoGE1zssvUoDfW-/view?usp=sharing" target="_blank" rel="noopener">Stylized shader demonstration 1</a></li>
+      <li><span class="lbl">Video</span><a href="https://drive.google.com/file/d/1oApVXycO-IqkhuH1vR7c_Y3HpGADu_q8/view?usp=sharing" target="_blank" rel="noopener">Stylized shader demonstration 2</a></li>
+      <li><span class="lbl">Built on</span><a href="https://github.com/nerfstudio-project/nerfstudio" target="_blank" rel="noopener">Nerfstudio · Splatfacto</a></li>
+      <li><span class="lbl">Built on</span><a href="https://github.com/clarte53/GaussianSplattingVRViewerUnity" target="_blank" rel="noopener">Unity Gaussian Splatting VR Viewer</a></li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>&copy; <span id="yr"></span> Yuanchen Li &middot; UC Berkeley CS184 Final Project</span>
+    <a class="back" href="../index.html">&larr; Back to homepage</a>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('yr').textContent = new Date().getFullYear();
+  var io = new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} }); }, { threshold:0.1 });
+  document.querySelectorAll('.reveal').forEach(function(el,i){ el.style.transitionDelay=((i%4)*55)+'ms'; io.observe(el); });
+</script>
+</body>
+</html>
